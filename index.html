@@ -1,274 +1,292 @@
 <div id="FX_ROOT">
   <style>
-    /* ====== Editor UI (inside Genially) ====== */
-    #fx-audio-editor{
+    /* ====== AUDIO PLAYER EDITOR (Genially embed) ====== */
+    .apx-editor {
+      --panel: rgba(20, 20, 26, 0.92);
+      --panel2: rgba(16, 16, 22, 0.88);
+      --stroke: rgba(255,255,255,.10);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.62);
+      --accent: #8a2be2;
+
+      width: min(1200px, 96vw);
+      height: min(640px, 82vh);
+      margin: 0 auto;
+      border-radius: 22px;
+      overflow: hidden;
+      border: 1px solid var(--stroke);
+      box-shadow: 0 22px 70px rgba(0,0,0,.35);
+      background:
+        radial-gradient(1000px 520px at 15% 15%, rgba(138,43,226,.25), transparent 60%),
+        radial-gradient(900px 520px at 85% 30%, rgba(255,0,128,.16), transparent 60%),
+        radial-gradient(900px 520px at 50% 85%, rgba(0,190,255,.10), transparent 60%),
+        linear-gradient(180deg, rgba(8,8,12,.92), rgba(8,8,12,.80));
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      color:#111;
-      width:min(980px, 96vw);
-      margin:0 auto;
-      background:rgba(255,255,255,.92);
-      border-radius:18px;
-      box-shadow:0 12px 40px rgba(0,0,0,.15);
-      overflow:hidden;
-      border:1px solid rgba(0,0,0,.08);
+      color: var(--text);
+      position: relative;
     }
-    #fx-audio-editor .hdr{
-      padding:14px 16px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      background:linear-gradient(180deg, rgba(250,250,250,.98), rgba(245,245,245,.92));
-      border-bottom:1px solid rgba(0,0,0,.07);
+
+    .apx-grid {
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      height: 100%;
     }
-    #fx-audio-editor .hdr h3{
-      margin:0;
-      font-size:14px;
-      font-weight:700;
-      letter-spacing:.2px;
+
+    /* Left panel */
+    .apx-panel {
+      background: linear-gradient(180deg, var(--panel), var(--panel2));
+      border-right: 1px solid var(--stroke);
+      padding: 18px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
     }
-    #fx-audio-editor .hdr .hint{
-      font-size:12px;
-      color:rgba(0,0,0,.55);
+
+    .apx-title {
+      font-weight: 800;
+      letter-spacing: .2px;
+      margin: 2px 0 10px;
+      font-size: 18px;
     }
-    #fx-audio-editor .grid{
-      display:grid;
-      grid-template-columns: 360px 1fr;
-      gap:14px;
-      padding:14px;
+
+    .apx-field label {
+      display: block;
+      font-size: 12px;
+      color: var(--muted);
+      margin: 0 0 6px;
+      font-weight: 650;
     }
-    @media (max-width: 880px){
-      #fx-audio-editor .grid{ grid-template-columns:1fr; }
+
+    .apx-input, .apx-select, .apx-textarea {
+      width: 100%;
+      box-sizing: border-box;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      padding: 10px 10px;
+      outline: none;
+      font-size: 13px;
     }
-    .fx-card{
-      background:rgba(255,255,255,.9);
-      border:1px solid rgba(0,0,0,.08);
-      border-radius:16px;
-      padding:12px;
+
+    .apx-textarea { min-height: 110px; resize: vertical; }
+
+    .apx-hint {
+      font-size: 12px;
+      color: rgba(255,255,255,.55);
+      line-height: 1.35;
+      margin-top: 6px;
     }
-    .fx-row{
-      display:grid;
+
+    .apx-row {
+      display: grid;
       grid-template-columns: 1fr 1fr;
-      gap:10px;
+      gap: 10px;
     }
-    .fx-field{ margin-bottom:10px; }
-    .fx-field label{
-      display:block;
-      font-size:12px;
-      font-weight:650;
-      margin:0 0 6px;
-      color:rgba(0,0,0,.75);
+
+    .apx-btn {
+      border: none;
+      border-radius: 14px;
+      padding: 11px 12px;
+      font-weight: 800;
+      cursor: pointer;
+      background: linear-gradient(135deg, rgba(138,43,226,1), rgba(255,0,128,1));
+      color: #fff;
+      box-shadow: 0 16px 40px rgba(0,0,0,.30);
     }
-    .fx-field input[type="text"],
-    .fx-field input[type="number"],
-    .fx-field textarea,
-    .fx-field select{
-      width:100%;
-      box-sizing:border-box;
-      border:1px solid rgba(0,0,0,.14);
-      border-radius:12px;
-      padding:10px 10px;
-      font-size:13px;
-      outline:none;
-      background:#fff;
+    .apx-btn:active { transform: translateY(1px); }
+
+    .apx-btn.secondary {
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.14);
+      box-shadow: none;
+      font-weight: 750;
     }
-    .fx-field textarea{ min-height:128px; resize:vertical; }
-    .fx-field input[type="range"]{ width:100%; }
-    .fx-inline{
-      display:flex;
-      align-items:center;
-      gap:8px;
-      flex-wrap:wrap;
-      font-size:12px;
-      color:rgba(0,0,0,.72);
+
+    .apx-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 6px;
     }
-    .fx-inline input[type="checkbox"]{ transform: translateY(1px); }
-    .fx-btns{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-top:10px;
+
+    /* Right side */
+    .apx-stage {
+      position: relative;
+      padding: 18px;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: 12px;
     }
-    .fx-btn{
-      appearance:none;
-      border:none;
-      border-radius:14px;
-      padding:10px 12px;
-      font-weight:700;
-      font-size:13px;
-      cursor:pointer;
-      background:#111;
-      color:#fff;
-      box-shadow:0 10px 24px rgba(0,0,0,.18);
+
+    .apx-stageHeader {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255,255,255,.62);
+      font-size: 12px;
+      letter-spacing: .10em;
+      text-transform: uppercase;
+      user-select: none;
     }
-    .fx-btn.secondary{
-      background:#fff;
-      color:#111;
-      border:1px solid rgba(0,0,0,.14);
-      box-shadow:none;
+
+    .apx-previewWrap {
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,.10);
+      background:
+        radial-gradient(700px 360px at 50% 30%, rgba(138,43,226,.20), transparent 60%),
+        radial-gradient(700px 360px at 45% 85%, rgba(255,0,128,.10), transparent 60%),
+        linear-gradient(180deg, rgba(12,12,18,.70), rgba(12,12,18,.45));
+      overflow: hidden;
+      position: relative;
+      display: grid;
+      place-items: center;
     }
-    .fx-btn:active{ transform: translateY(1px); }
-    .fx-small{
-      font-size:12px;
-      color:rgba(0,0,0,.6);
-      line-height:1.35;
-      margin-top:8px;
+
+    .apx-previewFrame {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      background: transparent;
     }
-    .fx-code{
-      width:100%;
-      box-sizing:border-box;
-      border:1px dashed rgba(0,0,0,.22);
-      border-radius:14px;
-      padding:10px;
+
+    .apx-codeTitle {
+      font-size: 12px;
+      color: rgba(255,255,255,.62);
+      margin: 0 0 8px;
+      font-weight: 750;
+    }
+
+    .apx-codeBox {
+      border-radius: 18px;
+      border: 1px dashed rgba(255,255,255,.18);
+      background: rgba(255,255,255,.05);
+      padding: 12px;
       font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
-      font-size:12px;
-      min-height:130px;
-      background:rgba(250,250,250,.9);
-      white-space:pre;
-      overflow:auto;
+      font-size: 12px;
+      line-height: 1.35;
+      color: rgba(255,255,255,.92);
+      max-height: 160px;
+      overflow: auto;
+      white-space: pre;
     }
-    .fx-previewWrap{
-      height:420px;
-      border-radius:16px;
-      overflow:hidden;
-      border:1px solid rgba(0,0,0,.08);
-      background: radial-gradient(1200px 600px at 20% 10%, rgba(180,140,255,.22), transparent 60%),
-                  radial-gradient(900px 500px at 80% 20%, rgba(255,120,160,.22), transparent 55%),
-                  radial-gradient(900px 500px at 50% 85%, rgba(110,220,255,.18), transparent 60%),
-                  linear-gradient(180deg, rgba(10,12,18,.86), rgba(10,12,18,.72));
-      position:relative;
-    }
-    .fx-previewWrap::before{
-      content:"PREVIEW (как будет в Genially)";
-      position:absolute;
-      left:12px; top:10px;
-      font-size:11px;
-      letter-spacing:.12em;
-      color:rgba(255,255,255,.58);
-      z-index:2;
-      pointer-events:none;
-    }
-    .fx-preview{
-      position:absolute;
-      inset:0;
-      width:100%;
-      height:100%;
-      border:0;
-      background:transparent;
+
+    /* Small screens */
+    @media (max-width: 900px){
+      .apx-grid{ grid-template-columns: 1fr; }
+      .apx-editor{ height: auto; }
+      .apx-stage{ padding: 14px; }
+      .apx-previewWrap{ height: 360px; }
     }
   </style>
 
-  <div id="fx-audio-editor">
-    <div class="hdr">
-      <div>
-        <h3>Редактор аудиоплеера для Genially</h3>
-        <div class="hint">Список треков → Сгенерировать → Скопировать iframe</div>
-      </div>
-      <div class="hint">Прозрачный фон • Prev/Next • Плейлист • Громкость</div>
-    </div>
+  <div class="apx-editor" id="APX_EDITOR">
+    <div class="apx-grid">
 
-    <div class="grid">
-      <div class="fx-card">
-        <div class="fx-field">
-          <label>Список треков (по 1 в строке)</label>
-          <textarea id="fxTracks" placeholder="ФОРМАТ:
-url|название|обложка(optional)
-Пример:
-https://.../song1.mp3|Song 1|https://.../cover1.png
-https://.../song2.mp3|Song 2|"></textarea>
-          <div class="fx-small">
-            Нужны <b>прямые ссылки</b> на mp3/ogg/wav. “Ссылка на папку” не сработает без отдельного index.json.
-          </div>
-        </div>
+      <!-- LEFT: CONTROLS -->
+      <div class="apx-panel">
+        <div class="apx-title">Редактор плеера</div>
 
-        <div class="fx-row">
-          <div class="fx-field">
-            <label>Картинка по умолчанию (если у трека нет обложки)</label>
-            <input id="fxDefaultCover" type="text" placeholder="https://.../default-cover.png">
+        <div class="apx-row">
+          <div class="apx-field">
+            <label>Цвет (HEX):</label>
+            <input class="apx-input" id="apxAccent" value="#8a2be2" placeholder="#8a2be2" />
           </div>
-          <div class="fx-field">
-            <label>Заголовок/проект (необязательно)</label>
-            <input id="fxTitle" type="text" placeholder="Напр.: Радость • Плейлист">
-          </div>
-        </div>
-
-        <div class="fx-row">
-          <div class="fx-field">
-            <label>Акцентный цвет</label>
-            <input id="fxAccent" type="text" value="#ff5aa5" placeholder="#ff5aa5">
-          </div>
-          <div class="fx-field">
-            <label>Размер плеера</label>
-            <select id="fxSize">
-              <option value="compact">Компактный</option>
-              <option value="normal" selected>Обычный</option>
-              <option value="large">Крупный</option>
+          <div class="apx-field">
+            <label>Язык интерфейса:</label>
+            <select class="apx-select" id="apxLang">
+              <option value="ru" selected>Русский</option>
+              <option value="en">English</option>
             </select>
           </div>
         </div>
 
-        <div class="fx-row">
-          <div class="fx-field">
-            <label>Скругление (px)</label>
-            <input id="fxRadius" type="number" min="8" max="40" value="26">
-          </div>
-          <div class="fx-field">
-            <label>Размытие фона (blur)</label>
-            <input id="fxBlur" type="range" min="0" max="24" value="14">
+        <div class="apx-field">
+          <label>Путь к папке (GitHub raw):</label>
+          <input class="apx-input" id="apxFolder" placeholder="owner/repo/branch/path   (пример: naasi090574/-111/main/audio)" />
+          <div class="apx-hint">
+            Вариант 1 (рекомендуется): <b>owner/repo/branch/path</b><br>
+            Вариант 2: вставь raw-URL папки — я попробую распарсить.
           </div>
         </div>
 
-        <div class="fx-field">
-          <label>Показывать элементы</label>
-          <div class="fx-inline">
-            <label><input id="fxShowTimers" type="checkbox" checked> Таймеры</label>
-            <label><input id="fxShowProgress" type="checkbox" checked> Прогресс</label>
-            <label><input id="fxShowVolume" type="checkbox" checked> Громкость</label>
-            <label><input id="fxShowPlaylist" type="checkbox" checked> Кнопка «Плейлист»</label>
+        <div class="apx-field">
+          <label>Ссылка на обложку:</label>
+          <input class="apx-input" id="apxCover" placeholder="URL картинки (png/jpg/webp)" />
+        </div>
+
+        <div class="apx-field">
+          <label>Треки вручную (если не GitHub)</label>
+          <textarea class="apx-textarea" id="apxManual"
+            placeholder="по 1 в строке: url|название|обложка(optional)
+https://.../song1.mp3|Song 1|https://.../cover.png"></textarea>
+          <div class="apx-hint">
+            Если папка GitHub пустая/закрытая — вставь прямые ссылки тут.
           </div>
         </div>
 
-        <div class="fx-btns">
-          <button class="fx-btn" id="fxBuild">СГЕНЕРИРОВАТЬ</button>
-          <button class="fx-btn secondary" id="fxCopy">КОПИРОВАТЬ IFRAME</button>
-          <button class="fx-btn secondary" id="fxTest">Обновить предпросмотр</button>
+        <div class="apx-actions">
+          <button class="apx-btn" id="apxBuild">Получить код для Genially</button>
+          <button class="apx-btn secondary" id="apxCopy">Копировать iframe</button>
+          <button class="apx-btn secondary" id="apxRefresh">Обновить предпросмотр</button>
         </div>
 
-        <div class="fx-field" style="margin-top:12px;">
-          <label>Готовый код для вставки в Genially</label>
-          <div class="fx-code" id="fxOut" contenteditable="true" spellcheck="false"></div>
-          <div class="fx-small">Подсказка: после вставки в Genially растяни элемент на нужный размер и поставь «На передний план».</div>
+        <div class="apx-hint">
+          Подсказка: GitHub “папку” браузер читать не умеет. Я достаю список файлов через GitHub API (публичный репозиторий).
         </div>
       </div>
 
-      <div class="fx-card">
-        <div class="fx-previewWrap">
-          <iframe class="fx-preview" id="fxPreview"></iframe>
+      <!-- RIGHT: PREVIEW + CODE -->
+      <div class="apx-stage">
+        <div class="apx-stageHeader">Предпросмотр:</div>
+
+        <div class="apx-previewWrap">
+          <iframe class="apx-previewFrame" id="apxPreview"></iframe>
+        </div>
+
+        <div>
+          <div class="apx-codeTitle">Код для вставки в Genially:</div>
+          <div class="apx-codeBox" id="apxOut" contenteditable="true" spellcheck="false"></div>
         </div>
       </div>
+
     </div>
   </div>
 
   <script>
   (function(){
-    const $ = (id)=>document.getElementById(id);
+    const $ = (id) => document.getElementById(id);
 
-    const defaults = {
-      tracks: "",
-      defaultCover: "",
-      title: "",
-      accent: "#ff5aa5",
-      size: "normal",
-      radius: 26,
-      blur: 14,
-      showTimers: true,
-      showProgress: true,
-      showVolume: true,
-      showPlaylist: true
+    const UI = {
+      accent: $("apxAccent"),
+      lang: $("apxLang"),
+      folder: $("apxFolder"),
+      cover: $("apxCover"),
+      manual: $("apxManual"),
+      build: $("apxBuild"),
+      copy: $("apxCopy"),
+      refresh: $("apxRefresh"),
+      preview: $("apxPreview"),
+      out: $("apxOut"),
+      editor: $("APX_EDITOR")
     };
 
-    function parseTracks(text){
-      const lines = (text||"").split(/\r?\n/).map(s=>s.trim()).filter(Boolean);
+    function safeHex(hex){
+      const h = String(hex||"").trim();
+      if(/^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(h)) return h;
+      return "#8a2be2";
+    }
+
+    function escAttr(s){
+      return String(s)
+        .replace(/&/g,"&amp;")
+        .replace(/"/g,"&quot;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;");
+    }
+
+    function parseManual(text){
+      const lines = (text||"").split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
       const out = [];
       for(const line of lines){
         const parts = line.split("|").map(s=>s.trim());
@@ -283,31 +301,90 @@ https://.../song2.mp3|Song 2|"></textarea>
       return out;
     }
 
-    function escAttr(s){
-      return String(s)
-        .replace(/&/g,"&amp;")
-        .replace(/"/g,"&quot;")
-        .replace(/</g,"&lt;")
-        .replace(/>/g,"&gt;");
+    // Accept:
+    // 1) owner/repo/branch/path
+    // 2) https://raw.githubusercontent.com/owner/repo/branch/path/
+    function parseGitHubFolder(input){
+      const s = String(input||"").trim();
+      if(!s) return null;
+
+      // raw url
+      const raw = s.match(/^https?:\/\/raw\.githubusercontent\.com\/([^\/]+)\/([^\/]+)\/([^\/]+)\/?(.*)$/i);
+      if(raw){
+        const owner = raw[1], repo = raw[2], branch = raw[3];
+        let path = (raw[4]||"").replace(/\/+$/,"");
+        return { owner, repo, branch, path };
+      }
+
+      // owner/repo/branch/path
+      const m = s.match(/^([^\/\s]+)\/([^\/\s]+)\/([^\/\s]+)\/?(.*)$/);
+      if(m){
+        const owner = m[1], repo = m[2], branch = m[3];
+        let path = (m[4]||"").replace(/\/+$/,"");
+        return { owner, repo, branch, path };
+      }
+
+      return null;
+    }
+
+    async function fetchGitHubTracks(folderSpec){
+      if(!folderSpec) return [];
+      const {owner, repo, branch, path} = folderSpec;
+
+      const api = `https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/contents/${encodeURIComponent(path||"")}?ref=${encodeURIComponent(branch)}`;
+
+      const res = await fetch(api, { headers: { "Accept":"application/vnd.github+json" } });
+      if(!res.ok) throw new Error("GitHub API: " + res.status);
+      const data = await res.json();
+      if(!Array.isArray(data)) return [];
+
+      const AUDIO = /\.(mp3|ogg|wav|m4a)$/i;
+
+      const tracks = data
+        .filter(x => x && x.type === "file" && AUDIO.test(x.name||""))
+        .map(x => ({
+          title: (x.name||"").replace(AUDIO,""),
+          url: x.download_url || "",
+          cover: ""
+        }))
+        .filter(t => /^https?:\/\//i.test(t.url));
+
+      return tracks;
+    }
+
+    function getLabels(lang){
+      const ru = {
+        nowPlaying: "СЕЙЧАС ИГРАЕТ",
+        playlist: "Плейлист",
+        loading: "Загрузка…",
+        empty: "Нет треков",
+        artist: "Исполнитель"
+      };
+      const en = {
+        nowPlaying: "NOW PLAYING",
+        playlist: "Playlist",
+        loading: "Loading…",
+        empty: "No tracks",
+        artist: "Artist"
+      };
+      return lang === "en" ? en : ru;
     }
 
     function buildPlayerSrcdoc(cfg){
-      const tracks = parseTracks(cfg.tracks);
+      const labels = getLabels(cfg.lang);
+
       const payload = {
-        title: cfg.title || "",
-        accent: cfg.accent || "#ff5aa5",
-        size: cfg.size || "normal",
-        radius: Number(cfg.radius||26),
-        blur: Number(cfg.blur||14),
-        showTimers: !!cfg.showTimers,
-        showProgress: !!cfg.showProgress,
-        showVolume: !!cfg.showVolume,
-        showPlaylist: !!cfg.showPlaylist,
-        defaultCover: cfg.defaultCover || "",
-        tracks
+        accent: cfg.accent,
+        cover: cfg.cover || "",
+        tracks: cfg.tracks || [],
+        labels
       };
 
       const json = JSON.stringify(payload);
+
+      // IMPORTANT: No literal </script> inside outer script context:
+      const openScr = "<scr" + "ipt>";
+      const closeScr = "</scr" + "ipt>";
 
       return `<!doctype html><html><head><meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
@@ -318,412 +395,382 @@ https://.../song2.mp3|Song 2|"></textarea>
     overflow:hidden;
     font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   }
-  :root{ --accent:#ff5aa5; --r:26px; --blur:14px; --fg:rgba(255,255,255,.92); --mut:rgba(255,255,255,.62); }
-  .fx-wrap{
+  :root{
+    --a:${cfg.accent};
+    --fg: rgba(255,255,255,.92);
+    --mut: rgba(255,255,255,.62);
+    --glass: rgba(255,255,255,.08);
+    --stroke: rgba(255,255,255,.12);
+  }
+  .wrap{
     position:absolute; inset:0;
-    display:flex; align-items:center; justify-content:center;
+    display:grid; place-items:center;
     pointer-events:none;
   }
-  .fx-player{
+  .player{
     pointer-events:auto;
-    width:min(760px, 96vw);
-    box-sizing:border-box;
-    border-radius: var(--r);
-    padding: 14px 14px;
-    color:var(--fg);
-    background: rgba(255,255,255,.10);
-    backdrop-filter: blur(var(--blur));
-    -webkit-backdrop-filter: blur(var(--blur));
-    border: 1px solid rgba(255,255,255,.18);
-    box-shadow: 0 18px 60px rgba(0,0,0,.35);
+    width:min(720px, 92vw);
+    border-radius: 22px;
+    padding: 16px 16px 14px;
+    border:1px solid var(--stroke);
+    background: linear-gradient(135deg, rgba(138,43,226,.55), rgba(255,0,128,.45));
+    box-shadow: 0 22px 65px rgba(0,0,0,.35);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    color: var(--fg);
   }
-  .size-compact{ width:min(560px, 96vw); padding:12px; }
-  .size-large{ width:min(880px, 96vw); padding:16px; }
-
   .top{
     display:flex; align-items:center; gap:12px;
+    margin-bottom: 10px;
   }
-  .cover{
-    width:72px; height:72px; border-radius:18px;
-    background:rgba(255,255,255,.14);
-    overflow:hidden; flex:0 0 auto;
-    border:1px solid rgba(255,255,255,.18);
+  .ring{
+    width:54px; height:54px; border-radius:999px;
+    border:2px solid rgba(255,255,255,.7);
+    box-shadow: 0 0 0 10px rgba(255,255,255,.10) inset;
+    overflow:hidden;
+    flex: 0 0 auto;
   }
-  .cover img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .ring img{ width:100%; height:100%; object-fit:cover; display:block; }
   .meta{ flex:1 1 auto; min-width:0; }
-  .project{
-    font-size:11px; letter-spacing:.14em; text-transform:uppercase;
-    color: rgba(255,255,255,.58);
-    margin-bottom:4px;
+  .np{
+    font-size:10px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color: rgba(255,255,255,.70);
+    margin-bottom: 4px;
+  }
+  .title{
+    font-weight: 850;
+    font-size: 14px;
     white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
   }
-  .track{
-    font-size:15px; font-weight:750;
-    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  .artist{
+    font-size: 11px;
+    color: rgba(255,255,255,.75);
+    margin-top: 3px;
   }
-
+  .bar{
+    height: 4px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.35);
+    overflow:hidden;
+    margin: 8px 0 10px;
+  }
+  .bar > i{
+    display:block;
+    height:100%;
+    width:0%;
+    background: rgba(255,255,255,.92);
+  }
   .controls{
-    display:flex; align-items:center; gap:10px;
-    margin-top:12px;
+    display:flex; align-items:center; justify-content:space-between;
+    gap: 10px;
+  }
+  .left, .right{
+    display:flex; align-items:center; gap: 10px;
   }
   .btn{
-    width:44px; height:44px; border-radius:999px;
-    border:1px solid rgba(255,255,255,.18);
+    width: 38px; height: 38px;
+    border-radius: 999px;
     background: rgba(0,0,0,.18);
+    border:1px solid rgba(255,255,255,.14);
     display:grid; place-items:center;
     cursor:pointer;
     user-select:none;
-    transition: transform .08s ease, background .2s ease;
   }
-  .btn:active{ transform: translateY(1px) scale(.99); }
-  .btn svg{ width:20px; height:20px; fill: rgba(255,255,255,.92); }
-  .btn.main{
-    width:52px; height:52px;
-    background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.25), rgba(0,0,0,.25));
-    border-color: rgba(255,255,255,.22);
-    box-shadow: 0 10px 30px rgba(0,0,0,.28);
-  }
-
-  .seek{
-    flex:1 1 auto;
-    display:flex; align-items:center; gap:10px;
-    min-width:120px;
-  }
-  .time{
-    font-size:12px; color: rgba(255,255,255,.72);
-    font-variant-numeric: tabular-nums;
-    min-width:44px; text-align:center;
-  }
-  input[type="range"]{
+  .btn svg{ width:18px; height:18px; fill: rgba(255,255,255,.95); }
+  .btn:active{ transform: translateY(1px); }
+  .vol{
+    width: 110px;
     -webkit-appearance:none; appearance:none;
-    height:4px; border-radius:999px;
-    background: rgba(255,255,255,.28);
+    height: 4px; border-radius:999px;
+    background: rgba(255,255,255,.35);
     outline:none;
   }
-  input[type="range"]::-webkit-slider-thumb{
+  .vol::-webkit-slider-thumb{
     -webkit-appearance:none; appearance:none;
-    width:14px; height:14px; border-radius:50%;
-    background: var(--accent);
-    border:2px solid rgba(255,255,255,.75);
-    box-shadow: 0 8px 18px rgba(0,0,0,.25);
-    cursor:pointer;
+    width: 14px; height: 14px; border-radius: 50%;
+    background: var(--a);
+    border: 2px solid rgba(255,255,255,.80);
+    box-shadow: 0 10px 20px rgba(0,0,0,.25);
   }
 
-  .right{
-    display:flex; align-items:center; gap:10px;
-  }
-  .vol{ width:110px; }
-  .pill{
-    height:38px; padding:0 12px; border-radius:999px;
-    border:1px solid rgba(255,255,255,.18);
+  .menuBtn{
+    width: 40px; height: 38px;
+    border-radius: 12px;
     background: rgba(0,0,0,.18);
-    color:rgba(255,255,255,.92);
-    font-weight:700;
-    font-size:12px;
+    border:1px solid rgba(255,255,255,.14);
+    display:grid; place-items:center;
     cursor:pointer;
   }
+  .menuBtn svg{ width:18px; height:18px; fill: rgba(255,255,255,.95); }
 
-  .playlist{
-    margin-top:12px;
-    border-radius:18px;
-    border:1px solid rgba(255,255,255,.16);
-    background: rgba(0,0,0,.20);
+  .plist{
+    margin-top: 10px;
+    border-radius: 16px;
+    border:1px solid rgba(255,255,255,.12);
+    background: rgba(0,0,0,.18);
+    max-height: 0;
     overflow:hidden;
-    max-height:0;
     transition:max-height .25s ease;
   }
-  .playlist.open{ max-height: 240px; }
-  .plist{
-    max-height:240px;
-    overflow:auto;
+  .plist.open{ max-height: 220px; }
+  .plist .inner{
+    max-height: 220px; overflow:auto;
   }
   .item{
     display:flex; align-items:center; gap:10px;
-    padding:10px 12px;
-    cursor:pointer;
+    padding: 10px 12px;
     border-top:1px solid rgba(255,255,255,.10);
+    cursor:pointer;
   }
   .item:first-child{ border-top:none; }
   .dot{
-    width:8px; height:8px; border-radius:50%;
+    width: 8px; height: 8px; border-radius: 50%;
     background: rgba(255,255,255,.35);
   }
-  .item.active .dot{ background: var(--accent); box-shadow: 0 0 0 6px rgba(255,90,165,.18); }
-  .ttl{
-    flex:1 1 auto;
-    font-size:13px;
+  .item.active .dot{ background: var(--a); box-shadow: 0 0 0 6px rgba(0,0,0,.12); }
+  .itTitle{
+    flex: 1 1 auto;
+    font-size: 13px;
     white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-    color: rgba(255,255,255,.9);
   }
-  .muted{ color: rgba(255,255,255,.62); font-size:12px; }
+  .empty{
+    padding: 12px;
+    color: rgba(255,255,255,.70);
+    font-size: 12px;
+  }
 
-  /* optional visibility */
-  .hideTimers .time{ display:none; }
-  .hideProgress .seek{ display:none; }
-  .hideVolume .vol{ display:none; }
-  .hidePlaylistBtn #btnPlaylist{ display:none; }
-
-  /* scrollbar */
-  .plist::-webkit-scrollbar{ width:10px; }
-  .plist::-webkit-scrollbar-thumb{ background: rgba(255,255,255,.18); border-radius:999px; border:2px solid rgba(0,0,0,0); background-clip: padding-box; }
+  .inner::-webkit-scrollbar{ width:10px; }
+  .inner::-webkit-scrollbar-thumb{ background: rgba(255,255,255,.18); border-radius:999px; border:2px solid rgba(0,0,0,0); background-clip: padding-box; }
 </style>
 </head>
 <body>
-<div class="fx-wrap">
-  <div class="fx-player" id="player">
+<div class="wrap">
+  <div class="player">
     <div class="top">
-      <div class="cover"><img id="cover" alt="" /></div>
+      <div class="ring"><img id="cov" alt=""></div>
       <div class="meta">
-        <div class="project" id="project"></div>
-        <div class="track" id="trackTitle">—</div>
+        <div class="np" id="np">${labels.nowPlaying}</div>
+        <div class="title" id="tt">${labels.loading}</div>
+        <div class="artist" id="ar">${labels.artist}</div>
       </div>
-      <button class="pill" id="btnPlaylist" type="button">Плейлист</button>
     </div>
 
-    <div class="controls">
-      <div class="btn" id="btnPrev" title="Назад">
-        <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6V6zm3.5 6 10-6v12l-10-6z"/></svg>
-      </div>
-      <div class="btn main" id="btnPlay" title="Пуск/Пауза">
-        <svg id="icoPlay" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-        <svg id="icoPause" viewBox="0 0 24 24" style="display:none"><path d="M6 5h4v14H6V5zm8 0h4v14h-4V5z"/></svg>
-      </div>
-      <div class="btn" id="btnNext" title="Вперёд">
-        <svg viewBox="0 0 24 24"><path d="M16 6h2v12h-2V6zM4.5 18V6l10 6-10 6z"/></svg>
-      </div>
+    <div class="bar"><i id="prog"></i></div>
 
-      <div class="seek">
-        <div class="time" id="tCur">0:00</div>
-        <input id="rngSeek" type="range" min="0" max="1000" value="0" />
-        <div class="time" id="tDur">0:00</div>
+    <div class="controls">
+      <div class="left">
+        <div class="btn" id="prev" title="Prev">
+          <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6V6zm3.5 6 10-6v12l-10-6z"/></svg>
+        </div>
+        <div class="btn" id="play" title="Play/Pause">
+          <svg id="icoPlay" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          <svg id="icoPause" viewBox="0 0 24 24" style="display:none"><path d="M6 5h4v14H6V5zm8 0h4v14h-4V5z"/></svg>
+        </div>
+        <div class="btn" id="next" title="Next">
+          <svg viewBox="0 0 24 24"><path d="M16 6h2v12h-2V6zM4.5 18V6l10 6-10 6z"/></svg>
+        </div>
       </div>
 
       <div class="right">
-        <input class="vol" id="rngVol" type="range" min="0" max="100" value="80" />
+        <input class="vol" id="vol" type="range" min="0" max="100" value="80">
+        <div class="menuBtn" id="menu" title="${labels.playlist}">
+          <svg viewBox="0 0 24 24"><path d="M4 6h16v2H4V6zm0 5h16v2H4v-2zm0 5h10v2H4v-2z"/></svg>
+        </div>
       </div>
     </div>
 
-    <div class="playlist" id="playlistBox">
-      <div class="plist" id="plist"></div>
-    </div>
-
+    <div class="plist" id="plist"><div class="inner" id="inner"></div></div>
     <audio id="aud" preload="metadata"></audio>
   </div>
 </div>
 
-<script>
+${openScr}
 (function(){
   const CFG = ${json};
 
-  const elPlayer = document.getElementById('player');
-  const elProject = document.getElementById('project');
-  const elTrackTitle = document.getElementById('trackTitle');
-  const elCover = document.getElementById('cover');
-  const elAud = document.getElementById('aud');
+  const cov = document.getElementById('cov');
+  const tt  = document.getElementById('tt');
+  const ar  = document.getElementById('ar');
+  const prog= document.getElementById('prog');
 
-  const btnPlay = document.getElementById('btnPlay');
-  const btnPrev = document.getElementById('btnPrev');
-  const btnNext = document.getElementById('btnNext');
-  const btnPlaylist = document.getElementById('btnPlaylist');
-  const playlistBox = document.getElementById('playlistBox');
-  const plist = document.getElementById('plist');
+  const aud = document.getElementById('aud');
+  const prev= document.getElementById('prev');
+  const play= document.getElementById('play');
+  const next= document.getElementById('next');
+  const vol = document.getElementById('vol');
 
   const icoPlay = document.getElementById('icoPlay');
-  const icoPause = document.getElementById('icoPause');
+  const icoPause= document.getElementById('icoPause');
 
-  const rngSeek = document.getElementById('rngSeek');
-  const rngVol = document.getElementById('rngVol');
-  const tCur = document.getElementById('tCur');
-  const tDur = document.getElementById('tDur');
+  const menu = document.getElementById('menu');
+  const plist= document.getElementById('plist');
+  const inner= document.getElementById('inner');
 
   const tracks = Array.isArray(CFG.tracks) ? CFG.tracks : [];
   let idx = 0;
-  let seeking = false;
-
-  // theme
-  document.documentElement.style.setProperty('--accent', CFG.accent || '#ff5aa5');
-  document.documentElement.style.setProperty('--r', (CFG.radius||26) + 'px');
-  document.documentElement.style.setProperty('--blur', (CFG.blur||14) + 'px');
-
-  elPlayer.classList.toggle('size-compact', CFG.size === 'compact');
-  elPlayer.classList.toggle('size-large', CFG.size === 'large');
-
-  if(!CFG.showTimers) elPlayer.classList.add('hideTimers');
-  if(!CFG.showProgress) elPlayer.classList.add('hideProgress');
-  if(!CFG.showVolume) elPlayer.classList.add('hideVolume');
-  if(!CFG.showPlaylistBtn){} // not used
-  if(!CFG.showPlaylist) elPlayer.classList.add('hidePlaylistBtn');
-
-  elProject.textContent = CFG.title || '';
-  elProject.style.display = CFG.title ? 'block' : 'none';
-
-  function fmt(sec){
-    if(!isFinite(sec) || sec < 0) return '0:00';
-    sec = Math.floor(sec);
-    const m = Math.floor(sec/60);
-    const s = sec%60;
-    return m + ':' + String(s).padStart(2,'0');
-  }
 
   function setIcons(isPlaying){
-    icoPlay.style.display = isPlaying ? 'none' : 'block';
-    icoPause.style.display = isPlaying ? 'block' : 'none';
+    icoPlay.style.display = isPlaying ? 'none':'block';
+    icoPause.style.display= isPlaying ? 'block':'none';
   }
 
-  function coverFor(track){
-    return track.cover || CFG.defaultCover || '';
+  function coverFor(t){
+    return t.cover || CFG.cover || '';
   }
 
-  function loadTrack(i, autoplay){
+  function fmtTitle(t, i){
+    return (t && t.title) ? t.title : ('Track ' + (i+1));
+  }
+
+  function buildList(){
+    inner.innerHTML = '';
     if(!tracks.length){
-      elTrackTitle.textContent = 'Добавь треки в редакторе';
-      elCover.src = CFG.defaultCover || '';
-      elAud.removeAttribute('src');
-      setIcons(false);
+      inner.innerHTML = '<div class="empty">'+(CFG.labels.empty || 'No tracks')+'</div>';
       return;
     }
-    idx = (i + tracks.length) % tracks.length;
-    const tr = tracks[idx];
-    elTrackTitle.textContent = tr.title || ('Track ' + (idx+1));
-    const c = coverFor(tr);
-    elCover.src = c || '';
-    elAud.src = tr.url;
-    elAud.load();
-    highlight();
-    if(autoplay) elAud.play().catch(()=>{});
-  }
-
-  function buildPlaylist(){
-    plist.innerHTML = '';
-    tracks.forEach((tr, i)=>{
+    tracks.forEach((t, i)=>{
       const row = document.createElement('div');
       row.className = 'item';
-      row.innerHTML = '<div class="dot"></div><div class="ttl"></div><div class="muted">'+(i+1)+'</div>';
-      row.querySelector('.ttl').textContent = tr.title || ('Track ' + (i+1));
-      row.addEventListener('click', ()=>{
-        loadTrack(i, true);
-      });
-      plist.appendChild(row);
+      row.innerHTML = '<div class="dot"></div><div class="itTitle"></div>';
+      row.querySelector('.itTitle').textContent = fmtTitle(t, i);
+      row.addEventListener('click', ()=> load(i, true));
+      inner.appendChild(row);
     });
     highlight();
   }
 
   function highlight(){
-    const items = plist.querySelectorAll('.item');
+    const items = inner.querySelectorAll('.item');
     items.forEach((it, i)=> it.classList.toggle('active', i===idx));
   }
 
-  btnPlay.addEventListener('click', ()=>{
-    if(!elAud.src){ loadTrack(0, true); return; }
-    if(elAud.paused) elAud.play().catch(()=>{});
-    else elAud.pause();
-  });
-
-  btnPrev.addEventListener('click', ()=> loadTrack(idx-1, true));
-  btnNext.addEventListener('click', ()=> loadTrack(idx+1, true));
-
-  btnPlaylist.addEventListener('click', ()=>{
-    playlistBox.classList.toggle('open');
-  });
-
-  elAud.addEventListener('play', ()=> setIcons(true));
-  elAud.addEventListener('pause', ()=> setIcons(false));
-  elAud.addEventListener('ended', ()=> loadTrack(idx+1, true));
-
-  elAud.addEventListener('loadedmetadata', ()=>{
-    tDur.textContent = fmt(elAud.duration);
-  });
-
-  elAud.addEventListener('timeupdate', ()=>{
-    if(seeking) return;
-    tCur.textContent = fmt(elAud.currentTime);
-    if(isFinite(elAud.duration) && elAud.duration>0){
-      rngSeek.value = Math.round((elAud.currentTime / elAud.duration) * 1000);
-    }else{
-      rngSeek.value = 0;
+  function load(i, autoplay){
+    if(!tracks.length){
+      tt.textContent = CFG.labels.empty || 'No tracks';
+      ar.textContent = CFG.labels.artist || 'Artist';
+      cov.src = CFG.cover || '';
+      aud.removeAttribute('src');
+      setIcons(false);
+      return;
     }
+    idx = (i + tracks.length) % tracks.length;
+    const t = tracks[idx];
+    tt.textContent = fmtTitle(t, idx);
+    ar.textContent = CFG.labels.artist || 'Artist';
+    cov.src = coverFor(t) || '';
+    aud.src = t.url;
+    aud.load();
+    highlight();
+    if(autoplay) aud.play().catch(()=>{});
+  }
+
+  play.addEventListener('click', ()=>{
+    if(!aud.src){ load(0, true); return; }
+    if(aud.paused) aud.play().catch(()=>{});
+    else aud.pause();
+  });
+  prev.addEventListener('click', ()=> load(idx-1, true));
+  next.addEventListener('click', ()=> load(idx+1, true));
+
+  menu.addEventListener('click', ()=>{
+    plist.classList.toggle('open');
   });
 
-  rngSeek.addEventListener('input', ()=>{
-    seeking = true;
-  });
+  vol.addEventListener('input', ()=> aud.volume = Number(vol.value)/100);
 
-  rngSeek.addEventListener('change', ()=>{
-    if(isFinite(elAud.duration) && elAud.duration>0){
-      const p = Number(rngSeek.value)/1000;
-      elAud.currentTime = p * elAud.duration;
+  aud.addEventListener('play', ()=> setIcons(true));
+  aud.addEventListener('pause', ()=> setIcons(false));
+  aud.addEventListener('ended', ()=> load(idx+1, true));
+
+  aud.addEventListener('timeupdate', ()=>{
+    if(isFinite(aud.duration) && aud.duration > 0){
+      const p = (aud.currentTime / aud.duration) * 100;
+      prog.style.width = p.toFixed(2) + '%';
+    } else {
+      prog.style.width = '0%';
     }
-    seeking = false;
-  });
-
-  rngVol.addEventListener('input', ()=>{
-    elAud.volume = Number(rngVol.value)/100;
   });
 
   // init
-  elAud.volume = Number(rngVol.value)/100;
-  buildPlaylist();
-  loadTrack(0, false);
+  aud.volume = Number(vol.value)/100;
+  buildList();
+  load(0, false);
 })();
-</script>
+${closeScr}
+
 </body></html>`;
     }
 
-    function getCfgFromUI(){
-      return {
-        tracks: $("fxTracks").value.trim(),
-        defaultCover: $("fxDefaultCover").value.trim(),
-        title: $("fxTitle").value.trim(),
-        accent: $("fxAccent").value.trim() || defaults.accent,
-        size: $("fxSize").value,
-        radius: $("fxRadius").value,
-        blur: $("fxBlur").value,
-        showTimers: $("fxShowTimers").checked,
-        showProgress: $("fxShowProgress").checked,
-        showVolume: $("fxShowVolume").checked,
-        showPlaylist: $("fxShowPlaylist").checked
-      };
+    function buildIframe(srcdoc){
+      return `<iframe style="border:0;width:100%;height:100%;background:transparent;" allow="autoplay" srcdoc="${escAttr(srcdoc)}"></iframe>`;
     }
 
-    function buildIframeCode(cfg){
+    async function buildConfig(){
+      const accent = safeHex(UI.accent.value);
+      UI.editor.style.setProperty("--accent", accent);
+
+      const lang = UI.lang.value === "en" ? "en" : "ru";
+      const cover = (UI.cover.value || "").trim();
+
+      // 1) try GitHub folder
+      const spec = parseGitHubFolder(UI.folder.value);
+      let tracks = [];
+      let ghError = null;
+
+      if(spec){
+        try{
+          tracks = await fetchGitHubTracks(spec);
+        }catch(e){
+          ghError = e;
+        }
+      }
+
+      // 2) fallback manual
+      const manual = parseManual(UI.manual.value);
+      if(!tracks.length && manual.length) tracks = manual;
+
+      // If still empty: keep empty list
+      // Apply cover default if track cover empty
+      tracks = tracks.map(t => ({ url: t.url, title: t.title, cover: t.cover || "" }));
+
+      return { accent, lang, cover, tracks, ghError };
+    }
+
+    async function render(){
+      const cfg = await buildConfig();
       const srcdoc = buildPlayerSrcdoc(cfg);
-      // IMPORTANT: must escape for attribute
-      const iframe = `<iframe style="border:0;width:100%;height:100%;background:transparent;" allow="autoplay" srcdoc="${escAttr(srcdoc)}"></iframe>`;
-      return iframe;
+
+      const iframe = buildIframe(srcdoc);
+      UI.out.textContent = iframe;
+      UI.preview.setAttribute("srcdoc", srcdoc);
     }
 
-    function render(){
-      const cfg = getCfgFromUI();
-      const code = buildIframeCode(cfg);
-      $("fxOut").textContent = code;
-      $("fxPreview").setAttribute("srcdoc", buildPlayerSrcdoc(cfg));
-    }
-
-    function copy(){
-      const codeEl = $("fxOut");
-      const text = codeEl.textContent || "";
+    function copyOut(){
+      const el = UI.out;
       const range = document.createRange();
-      range.selectNodeContents(codeEl);
+      range.selectNodeContents(el);
       const sel = window.getSelection();
       sel.removeAllRanges();
       sel.addRange(range);
-      try{
-        document.execCommand('copy');
-      }catch(e){}
+      try{ document.execCommand("copy"); }catch(e){}
       sel.removeAllRanges();
     }
 
-    $("fxBuild").addEventListener("click", render);
-    $("fxTest").addEventListener("click", render);
-    $("fxCopy").addEventListener("click", ()=>{ render(); copy(); });
+    UI.build.addEventListener("click", render);
+    UI.refresh.addEventListener("click", render);
+    UI.copy.addEventListener("click", async ()=>{
+      await render();
+      copyOut();
+    });
 
-    // Pre-fill example (so you immediately see how it looks)
-    if(!$("fxTracks").value.trim()){
-      $("fxTracks").value =
-`https://example.com/audio/song1.mp3|Song 1|https://example.com/img/cover1.png
-https://example.com/audio/song2.mp3|Song 2|
-https://example.com/audio/song3.mp3|Song 3|https://example.com/img/cover3.png`;
+    // Prefill: your repo from screenshot (can be changed)
+    if(!UI.folder.value.trim()){
+      UI.folder.value = "naasi090574/-111/main";
     }
+
+    // First render
     render();
   })();
   </script>
